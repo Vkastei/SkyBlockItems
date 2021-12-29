@@ -3,15 +3,15 @@ package com.vinkas.testPlugin;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Snow;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityEnterBlockEvent;
-import org.bukkit.event.entity.EntityInteractEvent;
-import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -40,7 +40,8 @@ public class CustomItems implements Listener {
     private final TestPlugin plugin = TestPlugin.getInstance();
     public int length = 10;
     public int hypedmg = 300;
-
+    public int sceptredmg = 40;
+    public int i;
 
     public static void init(){
         createHype();
@@ -56,6 +57,7 @@ public class CustomItems implements Listener {
     private static void createAotv(){
         ItemStack item = new ItemStack(Material.DIAMOND_SHOVEL, 1);
         ItemMeta meta = item.getItemMeta();
+        meta.setUnbreakable(true);
         meta.setDisplayName("Aspect of the Void");
         item.setItemMeta(meta);
         aotv = item;
@@ -63,6 +65,7 @@ public class CustomItems implements Listener {
     }private static void createHype() {
         ItemStack item = new ItemStack(Material.IRON_SWORD, 1);
         ItemMeta meta = item.getItemMeta();
+        meta.setUnbreakable(true);
         meta.setDisplayName("Hyperion");
         item.setItemMeta(meta);
         hyperionItem = item;
@@ -70,6 +73,7 @@ public class CustomItems implements Listener {
     private static void createSpaceHelm(){
         ItemStack item = new ItemStack(Material.RED_STAINED_GLASS, 1);
         ItemMeta meta = item.getItemMeta();
+        meta.setUnbreakable(true);
         meta.setDisplayName(ChatColor.RED + "Dctr's Space Helmet");
         ArrayList<String> lore = new ArrayList<String>();
         lore.add(ChatColor.GRAY + "" + ChatColor.ITALIC +"A rare space helmet forged ");
@@ -90,6 +94,7 @@ public class CustomItems implements Listener {
     }private static void createCanon(){
         ItemStack item = new ItemStack(Material.BLAZE_ROD, 1);
         ItemMeta meta = item.getItemMeta();
+        meta.setUnbreakable(true);
         meta.setDisplayName("Canon");
         item.setItemMeta(meta);
         canon = item;
@@ -98,6 +103,7 @@ public class CustomItems implements Listener {
     private static void createTerm(){
         ItemStack item2 = new ItemStack(Material.BOW, 1);
         ItemMeta meta = item2.getItemMeta();
+        meta.setUnbreakable(true);
         meta.setDisplayName("Terminator");
         item2.setItemMeta(meta);
         terminator = item2;
@@ -106,6 +112,7 @@ public class CustomItems implements Listener {
     private static void createAots(){
         ItemStack item3 = new ItemStack(Material.DIAMOND_AXE, 1);
         ItemMeta meta = item3.getItemMeta();
+        meta.setUnbreakable(true);
         meta.setDisplayName("AOTS");
         item3.setItemMeta(meta);
         aots = item3;
@@ -114,6 +121,7 @@ public class CustomItems implements Listener {
     private static void createSceptre(){
         ItemStack item4 = new ItemStack(Material.ALLIUM, 1);
         ItemMeta meta = item4.getItemMeta();
+        meta.setUnbreakable(true);
         meta.setDisplayName("Spirit Sceptre");
         item4.setItemMeta(meta);
         sceptre = item4;
@@ -122,6 +130,7 @@ public class CustomItems implements Listener {
     private static void createProtBar(){
         ItemStack item5= new ItemStack(Material.ORANGE_TULIP, 1);
         ItemMeta meta = item5.getItemMeta();
+        meta.setUnbreakable(true);
         meta.setDisplayName("Protective Barrier");
         item5.setItemMeta(meta);
         protbar = item5;
@@ -142,33 +151,13 @@ public class CustomItems implements Listener {
 
         Location location = p.getLocation();
         //Hyperion
-        if (e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+        if (e.getAction().equals(Action.RIGHT_CLICK_AIR) ||  (e.getAction().equals(Action.RIGHT_CLICK_BLOCK))){
             if(p.getInventory().getItemInMainHand().equals(hyperionItem) || p.getInventory().getItemInMainHand().equals("Hyperion")){
                 Location loc1 = p.getLocation();
                 w.createExplosion(loc1, 0.0F, false);
                 Block b = p.getTargetBlock((Set<Material>)null, length);
                 Location loc = new Location(b.getWorld(), b.getX(), b.getY(), b.getZ(), p.getLocation().getYaw(), p.getLocation().getPitch());
                 p.teleport(loc);
-                p.setHealth(20);
-
-                for(Entity ent : p.getNearbyEntities(5, 5, 5))
-                {
-
-                    int i = 0;
-                    i++;
-
-                    //ent.remove();
-                    ((LivingEntity)ent).damage(hypedmg);
-
-                    Random r1 = new Random();
-                    p.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + i + ChatColor.GRAY + " enemy for " + ChatColor.RED + r1.nextInt((1000000000-100000000) + 100000000) + ChatColor.GRAY + " damage.");
-                }
-
-            }
-        }if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            if(p.getInventory().getItemInMainHand().equals(hyperionItem) || p.getInventory().getItemInMainHand().equals("Hyperion")){
-                w.createExplosion(p.getLocation(), 0.0F, false);
-
                 p.setHealth(20);
 
                 for(Entity ent : p.getNearbyEntities(5, 5, 5))
@@ -227,9 +216,25 @@ public class CustomItems implements Listener {
                 //Vector vector2 = new Vector(p.getEyeLocation().getX(), p.getEyeLocation().getY(), p.getEyeLocation().getZ());
                 bat.setVelocity(p.getLocation().getDirection().multiply(6));
                 //bat.setAI(false);
-                if(bat.getLocation().)
+
+                for(Entity ent : p.getNearbyEntities(2, 2, 2))
+                {
+                    if(ent != e.getPlayer()){
+                        w.createExplosion(bat.getLocation(), 3F, false);
+
+                        //ent.remove();
+                        ((LivingEntity)ent).damage(sceptredmg);
+
+                        Random r1 = new Random();
+                        p.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + "" + ChatColor.GRAY + " enemy for " + ChatColor.RED + r1.nextInt((10000000-10000) + 10000) + ChatColor.GRAY + " damage.");
+                    }
+
+                }
+
             }
+
         }
+        //Protective Barrier
         if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
             if(p.getInventory().getItemInMainHand().equals("Protective Barrier") || p.getInventory().getItemInMainHand().equals(protbar)){
 
@@ -285,19 +290,10 @@ public class CustomItems implements Listener {
         if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             if(p.getInventory().getItemInMainHand().equals(aotv) || p.getInventory().getItemInMainHand().equals("Aspect of the Void")){
                 Location loc1 = p.getLocation();
-                w.playSound(loc1, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
+                w.playSound(loc1, Sound.ENTITY_ENDERMAN_TELEPORT, 3, 1);
                 Block b = p.getTargetBlock((Set<Material>)null, 12);
                 Location loc = new Location(b.getWorld(), b.getX(), b.getY(), b.getZ(), p.getLocation().getYaw(), p.getLocation().getPitch());
                 p.teleport(loc);
-
-
-            }
-        }//aotv
-        if (e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
-            if(p.getInventory().getItemInMainHand().equals(aotv) || p.getInventory().getItemInMainHand().equals("Aspect of the Void")){
-                int i = 0;
-
-
 
 
             }
@@ -315,7 +311,7 @@ public class CustomItems implements Listener {
         Random random = new Random();
         if(p.getEquipment().getHelmet().equals("Dctr's Space Helmet") || p.getEquipment().getHelmet().equals(spacehelm)){
 
-            Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            i = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
                 @Override
                 public void run() {
                     int i = random.nextInt(7);
@@ -329,15 +325,21 @@ public class CustomItems implements Listener {
             }, 0L, 5L);
 
         }
-        if ( p.getPlayer().getLocation().getBlock().getType() == Material.WATER) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 3));
-        }
+
 
 
     }
 
+    @EventHandler
+    public void onSpaceHelmClick(InventoryClickEvent e1){
 
+        if(e1.getRawSlot() == 5 && e1.getCurrentItem().getType() == (Material.RED_STAINED_GLASS) || e1.getCurrentItem().getType() == (Material.GREEN_STAINED_GLASS) || e1.getCurrentItem().getType() == (Material.BLUE_STAINED_GLASS) || e1.getCurrentItem().getType() == (Material.CYAN_STAINED_GLASS) || e1.getCurrentItem().getType() == (Material.LIGHT_BLUE_STAINED_GLASS) || e1.getCurrentItem().getType() == (Material.ORANGE_STAINED_GLASS)){
+            e1.setCurrentItem(spacehelm);
 
+            Bukkit.getServer().getScheduler().cancelTask(i);
+        }
+
+    }
     public Location getLocationAroundCircle(Location center, double radius, double angleInRadian) {
         double x = center.getX() + radius * Math.cos(angleInRadian);
         double z = center.getZ() + radius * Math.sin(angleInRadian);
@@ -349,6 +351,5 @@ public class CustomItems implements Listener {
 
         return loc;
     }
-
 
 }

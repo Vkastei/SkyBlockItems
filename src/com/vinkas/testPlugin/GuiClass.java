@@ -27,7 +27,8 @@ public class GuiClass implements Listener {
         inv.addItem(CustomItems.canon);
         inv.addItem(CustomItems.aotv);
         inv.addItem(CustomItems.sceptre);
-        inv.addItem(blackArmor.chest());
+        inv.addItem(blackArmor.chestForGui());
+        inv.addItem(stormArmor.chestForGui());
     }
     @EventHandler
     public void onInventoryClick(InventoryDragEvent e1) {
@@ -63,11 +64,16 @@ public class GuiClass implements Listener {
             }if(e.getCurrentItem().equals(CustomItems.protbar)){
                 e.setCancelled(true);
                 p.getInventory().addItem(CustomItems.protbar);
-            }if(e.getCurrentItem().equals(blackArmor.chest())){
+            }if(e.getCurrentItem().equals(blackArmor.chestForGui())){
                 e.setCancelled(true);
                 p.getInventory().addItem(blackArmor.chest());
                 p.getInventory().addItem(blackArmor.boots());
                 p.getInventory().addItem(blackArmor.leggings());
+            }if(e.getCurrentItem().equals(stormArmor.chestForGui())){
+                e.setCancelled(true);
+                p.getInventory().addItem(stormArmor.chest());
+                p.getInventory().addItem(stormArmor.boots());
+                p.getInventory().addItem(stormArmor.leggings());
             }
         }
 

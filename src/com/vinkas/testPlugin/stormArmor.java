@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.w3c.dom.css.RGBColor;
 
 public class stormArmor {
     public static ItemStack chest() {
@@ -15,8 +16,20 @@ public class stormArmor {
 
         LeatherArmorMeta leatherArmorMeta0 = (LeatherArmorMeta) meta0;
 
-        leatherArmorMeta0.setColor(Color.AQUA);
+        leatherArmorMeta0.setColor(Color.fromRGB(22, 138, 183));
         leatherArmorMeta0.setDisplayName("Storm's Chestplate");
+        chest.setItemMeta(leatherArmorMeta0);
+
+        return chest;
+    }public static ItemStack chestForGui() {
+        ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE);
+
+        ItemMeta meta0 = chest.hasItemMeta() ? chest.getItemMeta() : Bukkit.getItemFactory().getItemMeta(chest.getType());
+
+        LeatherArmorMeta leatherArmorMeta0 = (LeatherArmorMeta) meta0;
+
+        leatherArmorMeta0.setColor(Color.fromRGB(22, 138, 183));
+        leatherArmorMeta0.setDisplayName("Storm's Armor");
         chest.setItemMeta(leatherArmorMeta0);
 
         return chest;
@@ -28,7 +41,7 @@ public class stormArmor {
 
         LeatherArmorMeta leatherArmorMeta1 = (LeatherArmorMeta) meta1;
 
-        leatherArmorMeta1.setColor(Color.AQUA);
+        leatherArmorMeta1.setColor(Color.fromRGB(21, 156, 181));
         leatherArmorMeta1.setDisplayName("Storm's Leggings");
         leggings.setItemMeta(leatherArmorMeta1);
 
@@ -41,7 +54,7 @@ public class stormArmor {
 
         LeatherArmorMeta leatherArmorMeta2 = (LeatherArmorMeta) meta2;
 
-        leatherArmorMeta2.setColor(Color.AQUA);
+        leatherArmorMeta2.setColor(Color.fromRGB(27, 179, 212));
         leatherArmorMeta2.setDisplayName("Storm's Boots");
 
         boots.setItemMeta(leatherArmorMeta2);
