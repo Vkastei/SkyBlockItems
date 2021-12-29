@@ -240,7 +240,7 @@ public class CustomItems implements Listener {
                     p.sendMessage("Ur sceptre did " + hypedmg + " dmg");
                 }*/
                 if(bat.getNearbyEntities(3, 3, 3).isEmpty()){
-                    p.sendMessage("Penis");
+                    p.sendMessage("works");
                 }
             }
         }
